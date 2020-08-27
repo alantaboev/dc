@@ -1,0 +1,11 @@
+{
+    "name": "alantaboev/php-project-lvl2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alan Taboev",
+            "email": "alantaboev@mail.ru"
+        }
+    ],
+    "require": {}
+}
