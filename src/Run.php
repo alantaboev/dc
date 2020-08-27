@@ -20,8 +20,8 @@ function run()
       -v --version                  Show version
 DOC;
 
-    $args = Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
+    $args = Docopt::handle($doc, array('version' => 'gendiff 1.0'));
     foreach ($args as $k => $v) {
-        echo $k.': '.json_encode($v).PHP_EOL;
+        echo $k . ': ' . json_encode($v) . PHP_EOL;
     }
 }
