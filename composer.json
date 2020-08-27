@@ -1,11 +1,22 @@
 {
-    "name": "alantaboev/dc",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Alan Taboev",
-            "email": "alantaboev@mail.ru"
-        }
-    ],
-    "require": {}
+  "name": "alantaboev/dc",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alan Taboev",
+      "email": "alantaboev@mail.ru"
+    }
+  ],
+  "bin": [
+    "bin/gendiff"
+  ],
+  "scripts": {
+    "phpcs": "phpcs"
+  },
+  "require": {
+    "docopt/docopt": "^1.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.5.5"
+  }
 }
