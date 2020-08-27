@@ -1,5 +1,5 @@
 {
-  "name": "alantaboev/dc",
+  "name": "alantaboev/differ",
   "license": "MIT",
   "authors": [
     {
@@ -13,8 +13,14 @@
   "scripts": {
     "phpcs": "phpcs"
   },
+  "autoload": {
+    "files": [
+      "src/Run.php"
+    ]
+  },
   "require": {
-    "docopt/docopt": "^1.0"
+    "docopt/docopt": "^1.0",
+    "ext-json": "*"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.5.5"
