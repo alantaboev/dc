@@ -15,7 +15,7 @@
   },
   "autoload": {
     "files": [
-      "src/Run.php"
+      "src/Core.php"
     ]
   },
   "require": {
