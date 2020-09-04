@@ -7,20 +7,20 @@
       "email": "alantaboev@mail.ru"
     }
   ],
-  "bin": [
-    "bin/gendiff"
-  ],
+  "bin": ["bin/gendiff"],
   "scripts": {
     "phpcs": "phpcs"
   },
   "autoload": {
     "files": [
-      "src/Core.php"
+      "src/Cli.php",
+      "src/Differ.php"
     ]
   },
   "require": {
     "docopt/docopt": "^1.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "funct/funct": "^1.5"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.5.5"

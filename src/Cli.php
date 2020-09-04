@@ -1,8 +1,9 @@
 <?php
 
-namespace Differ\Core;
+namespace Differ\Cli;
 
 use Docopt;
+use function Differ\Differ\genDiff;
 
 function run()
 {
@@ -22,8 +23,12 @@ function run()
       --format <fmt>                Report format [default: stylish]
 DOC;
 
-    $args = Docopt::handle($doc, array('version' => 'gendiff 1.0.0'));
-    foreach ($args as $k => $v) {
-        echo $k . ': ' . json_encode($v) . PHP_EOL;
+    $args = Docopt::handle($doc);
+
+    try {
+        print_r(genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']));
+    } catch (\Exception $e) {
+        print_r($e->getMessage());
+        die();
     }
 }
