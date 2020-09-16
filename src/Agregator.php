@@ -33,5 +33,4 @@ function getData(string $key, array $before, array $after)
         return ['key' => $key, 'beforeValue' => $before[$key], 'afterValue' => $after[$key], 'type' => 'changed'];
     }
     // Нужно ли тут выбросить исключение или оставить как есть?
-    return null;
 }
