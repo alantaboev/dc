@@ -8,10 +8,8 @@ use function Differ\Differ\genDiff;
 function run()
 {
     $doc = <<<DOC
-    gendiff -h
-    
     Generate diff
-    
+        
     Usage:
       gendiff (-h|--help)
       gendiff (-v|--version)
@@ -20,10 +18,10 @@ function run()
     Options:
       -h --help                     Show this screen
       -v --version                  Show version
-      --format <fmt>                Report format [default: stylish]
-DOC;
+      --format <fmt>                Report format [default: pretty]
+    DOC;
 
-    $args = Docopt::handle($doc);
+    $args = Docopt::handle($doc, ['version' => 'gendiff v1.0.1']);
 
     try {
         print_r(genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']));
