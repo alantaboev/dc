@@ -41,7 +41,7 @@ function getLines(array $tree)
 }
 
 // Проверка значения ключа. Если булев, то возврат строки, соответствующей значению
-function checkValue($value) : string
+function checkValue($value): string
 {
     if ($value === false) {
         return 'false';
