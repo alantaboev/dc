@@ -1,4 +1,5 @@
 /vendor/
 .idea/
+*.cache
 /file1.json
 /file2.json
