@@ -5,7 +5,7 @@ namespace Differ\Formatters\Pretty;
 function render(array $differences)
 {
     $lines = getLines($differences); // Получение строк
-    return "{\n$lines\n}"; // Возврат всех строк в фигурных скобках
+    return "{\n$lines\n}\n"; // Возврат всех строк в фигурных скобках
 }
 
 function getLines(array $tree)
