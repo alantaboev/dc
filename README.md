@@ -3,5 +3,26 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/alantaboev/differ)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/cc0ea93362f54f4c61ed/test_coverage)](https://codeclimate.com/github/alantaboev/differ/test_coverage)
  
- Второй проект на Хекслете «Вычислитель отличий»
+Вычислитель отличий (Difference calculator) – программа, определяющая разницу между двумя структурами данных.
  
+## Возможности утилиты:
+ 
+- Поддержка разных входных форматов: yaml и json
+- Генерация отчета в виде plain text, stylish и json
+
+## Пример использования:
+Для глобальной установки и обновления используйте команду: 
+```
+composer global require alantaboev/differ
+```
+[![asciicast](https://asciinema.org/a/qV02zc93goE4PBQWEsfFf4q2G.svg)](https://asciinema.org/a/qV02zc93goE4PBQWEsfFf4q2G)
+
+
+### Сравнение файлов в формате Json
+
+[![asciicast](https://asciinema.org/a/Ce2JfqfdKDg8G5SGmXhwcWT15.svg)](https://asciinema.org/a/Ce2JfqfdKDg8G5SGmXhwcWT15)
+
+
+### Сравнение файлов в формате Yaml
+
+[![asciicast](https://asciinema.org/a/0BWaU53EeAIhvnDinE6JzfwuF.svg)](https://asciinema.org/a/0BWaU53EeAIhvnDinE6JzfwuF)
