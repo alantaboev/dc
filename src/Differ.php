@@ -3,7 +3,7 @@
 namespace Differ\Differ;
 
 use function Differ\Agregator\agregateDiff;
-use function Differ\Parser\parse;
+use function Differ\Parsers\parse;
 use function Differ\Formatters\Pretty\render;
 
 function genDiff($firstFilePath, $secondFilePath, $format)

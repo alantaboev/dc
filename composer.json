@@ -17,7 +17,7 @@
       "src/Cli.php",
       "src/Differ.php",
       "src/Agregator.php",
-      "src/Parser.php",
+      "src/Parsers.php",
       "src/Formatters/Pretty.php",
       "src/Formatters/Json.php"
     ],
