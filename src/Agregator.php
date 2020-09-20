@@ -4,9 +4,18 @@ namespace Differ\Agregator;
 
 use function Funct\Collection\union;
 
-function agregateDiff(array $before, array $after)
+function agregateDiff($before, $after): array
 {
-    $uniqueKeys = array_keys(union($before, $after)); // Объединение и выборка уникальных ключей в отдельный массив
+    // Проверка входных данных. Объекты преобразуем в ассоциативные массивы
+    if (is_object($before)) {
+        $before = convertObjectToArray($before);
+    }
+    if (is_object($after)) {
+        $after = convertObjectToArray($after);
+    }
+    // Объединение и выборка уникальных ключей в отдельный массив
+    $uniqueKeys = union(array_keys($before), array_keys($after));
+    sort($uniqueKeys);
     return array_reduce($uniqueKeys, function ($acc, $key) use ($before, $after) {
         $acc[] = getData($key, $before, $after);
         return $acc;
@@ -24,6 +33,10 @@ function getData(string $key, array $before, array $after)
     if (!array_key_exists($key, $after)) {
         return ['key' => $key, 'value' => $before[$key], 'type' => 'deleted'];
     }
+    // Если значение ключа в обоих случаях массив, то создаем узел
+    if (is_array($before[$key]) && is_array($after[$key])) {
+        return ['name' => $key, 'type' => 'node', 'children' => agregateDiff($before[$key], $after[$key])];
+    }
     // Если значения ключа из обоих файлов равны, значит он НЕ изменился
     if ($before[$key] === $after[$key]) {
         return ['key' => $key, 'value' => $before[$key], 'type' => 'unchanged'];
@@ -32,5 +45,14 @@ function getData(string $key, array $before, array $after)
     if ($before[$key] !== $after[$key]) {
         return ['key' => $key, 'beforeValue' => $before[$key], 'afterValue' => $after[$key], 'type' => 'changed'];
     }
-    // Нужно ли тут выбросить исключение или оставить как есть?
+}
+
+// Преобразование объекта в ассоциативный массив
+function convertObjectToArray(object $data): array
+{
+    $result = [];
+    foreach ((array)$data as $key => $value) {
+        $result[$key] = is_object($value) ? convertObjectToArray($value) : $value;
+    }
+    return $result;
 }

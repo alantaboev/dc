@@ -22,7 +22,7 @@ function run()
       --format <fmt>                Report format [default: pretty]
     DOC;
 
-    $args = Docopt::handle($doc, ['version' => 'gendiff v1.0.1']);
+    $args = Docopt::handle($doc, ['version' => 'gendiff v1.0.*']);
 
     try {
         print_r(genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']));
