@@ -13,7 +13,7 @@ function getLines(array $tree, $depth = 0)
     $indent = '  ' . str_repeat('    ', $depth); // Отступ
     $strings = array_reduce($tree, function ($acc, $node) use ($indent, $depth) {
         switch ($node['type']) {
-            case 'node':
+            case 'parent':
                 $children = getLines($node['children'], $depth + 1);
                 $acc[] = "$indent  {$node['name']}: {\n$children\n  $indent}";
                 break;

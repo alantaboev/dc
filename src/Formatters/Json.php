@@ -1,8 +1,8 @@
 <?php
 
-namespace Differ\Json;
+namespace Differ\Formatters\Json;
 
-function renderJson(array $differences)
+function render(array $differences)
 {
     return json_encode($differences, JSON_PRETTY_PRINT);
 }

@@ -14,7 +14,7 @@ function getLines(array $tree, $parentName = null): array
 {
     $strings = array_reduce($tree, function ($acc, $node) use ($parentName) {
         switch ($node['type']) {
-            case 'node':
+            case 'parent':
                 $name = ($parentName === null) ? $node['name'] : "{$parentName}.{$node['name']}";
                 $acc[] = getLines($node['children'], $name);
                 break;

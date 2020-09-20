@@ -34,7 +34,7 @@ function getData(string $key, array $before, array $after)
         return ['key' => $key, 'value' => $before[$key], 'type' => 'deleted'];
     } elseif (is_array($before[$key]) && is_array($after[$key])) {
         // Если значение ключа в обоих случаях массив, то создаем узел
-        return ['name' => $key, 'type' => 'node', 'children' => agregateDiff($before[$key], $after[$key])];
+        return ['name' => $key, 'type' => 'parent', 'children' => agregateDiff($before[$key], $after[$key])];
     } elseif ($before[$key] === $after[$key]) {
         // Если значения ключа из обоих файлов равны, значит он НЕ изменился
         return ['key' => $key, 'value' => $before[$key], 'type' => 'unchanged'];

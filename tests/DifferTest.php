@@ -66,4 +66,24 @@ class DifferTest extends TestCase
         $expect = str_replace("\r\n", "\n", $content);
         $this->assertEquals($expect, genDiff($before, $after, 'plain'));
     }
+
+    // Тест вложенных файлов JSON с выводом в формате Json
+    public function testNestedJson()
+    {
+        $before = __DIR__ . "/fixtures/beforeNested.json";
+        $after = __DIR__ . "/fixtures/afterNested.json";
+        $content = file_get_contents(__DIR__ . "/fixtures/expect.json");
+        $expect = str_replace("\r\n", "\n", $content);
+        $this->assertEquals($expect, genDiff($before, $after, 'json'));
+    }
+
+    // Тест вложенных файлов YAML с выводом в формате Json
+    public function testNestedYaml()
+    {
+        $before = __DIR__ . "/fixtures/beforeNested.yaml";
+        $after = __DIR__ . "/fixtures/afterNested.yaml";
+        $content = file_get_contents(__DIR__ . "/fixtures/expect.json");
+        $expect = str_replace("\r\n", "\n", $content);
+        $this->assertEquals($expect, genDiff($before, $after, 'json'));
+    }
 }
