@@ -24,6 +24,7 @@
       "src/Agregator.php",
       "src/Parsers.php",
       "src/Formatters/Pretty.php",
+      "src/Formatters/Plain.php",
       "src/Formatters/Json.php"
     ]
   },

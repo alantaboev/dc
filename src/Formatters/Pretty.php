@@ -18,17 +18,17 @@ function getLines(array $tree, $depth = 0)
                 $acc[] = "$indent  {$node['name']}: {\n$children\n  $indent}";
                 break;
             case 'unchanged':
-                $acc[] = "$indent  {$node['key']}: " . checkValue($node['value'], $depth);
+                $acc[] = "$indent  {$node['key']}: " . getValue($node['value'], $depth);
                 break;
             case 'added':
-                $acc[] = "$indent+ {$node['key']}: " . checkValue($node['value'], $depth);
+                $acc[] = "$indent+ {$node['key']}: " . getValue($node['value'], $depth);
                 break;
             case 'deleted':
-                $acc[] = "$indent- {$node['key']}: " . checkValue($node['value'], $depth);
+                $acc[] = "$indent- {$node['key']}: " . getValue($node['value'], $depth);
                 break;
             case 'changed':
-                $acc[] = "$indent- {$node['key']}: " . checkValue($node['beforeValue'], $depth);
-                $acc[] = "$indent+ {$node['key']}: " . checkValue($node['afterValue'], $depth);
+                $acc[] = "$indent- {$node['key']}: " . getValue($node['beforeValue'], $depth);
+                $acc[] = "$indent+ {$node['key']}: " . getValue($node['afterValue'], $depth);
                 break;
             default:
                 throw new \Exception("Unknown action '{$node['type']}'");
@@ -39,7 +39,7 @@ function getLines(array $tree, $depth = 0)
 }
 
 // Проверка значения ключа. Если булев, то возврат строки, соответствующей значению
-function checkValue($value, int $depth)
+function getValue($value, int $depth)
 {
     if (is_bool($value)) {
         return $value === true ? 'true' : 'false';
@@ -57,7 +57,7 @@ function convertNode(array $node, int $depth)
     $endIndent = '  ' . str_repeat('    ', $depth - 1);
     $uniqueKeys = array_keys($node);
     $strings = array_reduce($uniqueKeys, function ($acc, $key) use ($node, $indent, $depth) {
-        $value = checkValue($node[$key], $depth);
+        $value = getValue($node[$key], $depth);
         $acc[] = "$indent  {$key}: $value";
         return $acc;
     });

@@ -4,7 +4,6 @@ namespace Differ\Differ;
 
 use function Differ\Agregator\agregateDiff;
 use function Differ\Parsers\parse;
-use function Differ\Formatters\Pretty\render;
 
 function genDiff($firstFilePath, $secondFilePath, $format)
 {
@@ -28,5 +27,9 @@ function genDiff($firstFilePath, $secondFilePath, $format)
     // Генерация массива данных с действиями, ключами и их значениями
     $differences = agregateDiff($firstFileKeys, $secondFileKeys);
 
-    return render($differences);
+    // Выбор функции для рендера
+    $format = ucfirst($format);
+    $render = "Differ\\Formatters\\$format\\render";
+
+    return $render($differences);
 }
