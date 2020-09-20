@@ -10,7 +10,7 @@ function render(array $differences)
 
 function getLines(array $tree, $depth = 0)
 {
-    $indent = '  ' . str_repeat('    ', $depth); // Отступ строки (4 пробела)
+    $indent = '  ' . str_repeat('    ', $depth); // Отступ
     $strings = array_reduce($tree, function ($acc, $node) use ($indent, $depth) {
         switch ($node['type']) {
             case 'node':
@@ -18,28 +18,23 @@ function getLines(array $tree, $depth = 0)
                 $acc[] = "$indent  {$node['name']}: {\n$children\n  $indent}";
                 break;
             case 'unchanged':
-                $value = checkValue($node['value'], $depth);
-                $acc[] = "$indent  {$node['key']}: $value";
+                $acc[] = "$indent  {$node['key']}: " . checkValue($node['value'], $depth);
                 break;
             case 'added':
-                $value = checkValue($node['value'], $depth);
-                $acc[] = "$indent+ {$node['key']}: $value";
+                $acc[] = "$indent+ {$node['key']}: " . checkValue($node['value'], $depth);
                 break;
             case 'deleted':
-                $value = checkValue($node['value'], $depth);
-                $acc[] = "$indent- {$node['key']}: $value";
+                $acc[] = "$indent- {$node['key']}: " . checkValue($node['value'], $depth);
                 break;
             case 'changed':
-                $oldValue = checkValue($node['beforeValue'], $depth);
-                $newValue = checkValue($node['afterValue'], $depth);
-                $acc[] = "$indent- {$node['key']}: $oldValue";
-                $acc[] = "$indent+ {$node['key']}: $newValue";
+                $acc[] = "$indent- {$node['key']}: " . checkValue($node['beforeValue'], $depth);
+                $acc[] = "$indent+ {$node['key']}: " . checkValue($node['afterValue'], $depth);
                 break;
             default:
                 throw new \Exception("Unknown action '{$node['type']}'");
         }
         return $acc;
-    }, $acc = []);
+    });
     return implode("\n", $strings); // Возврат массива в строки с разделителем переноса
 }
 
