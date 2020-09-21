@@ -48,9 +48,7 @@ function getData(string $key, array $before, array $after)
 // Преобразование объекта в ассоциативный массив
 function convertObjectToArray(object $data): array
 {
-    $result = [];
-    foreach ((array)$data as $key => $value) {
-        $result[$key] = is_object($value) ? convertObjectToArray($value) : $value;
-    }
-    return $result;
+    return array_map(function ($value) {
+        return is_object($value) ? convertObjectToArray($value) : $value;
+    }, (array)$data);
 }
