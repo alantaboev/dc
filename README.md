@@ -7,8 +7,8 @@
  
 ## Возможности утилиты:
  
-- Поддержка разных входных форматов: yaml и json
-- Генерация отчета в виде plain text, stylish и json
+- Поддержка разных входных форматов: _yaml_ и _json_
+- Генерация отчета в виде _plain text_, _json_ и _pretty_ (по умолчанию)
 
 ## Пример использования:
 Для глобальной установки и обновления используйте команду: 
@@ -26,3 +26,18 @@ composer global require alantaboev/differ
 ### Сравнение файлов в формате Yaml
 
 [![asciicast](https://asciinema.org/a/0BWaU53EeAIhvnDinE6JzfwuF.svg)](https://asciinema.org/a/0BWaU53EeAIhvnDinE6JzfwuF)
+
+
+### Сравнение файлов Json и Yaml с вложенной структурой данных
+
+[![asciicast](https://asciinema.org/a/EIp6I1QfBrDALAFy6tKYG7gLn.svg)](https://asciinema.org/a/EIp6I1QfBrDALAFy6tKYG7gLn)
+
+
+### Вывод отчета в виде plain text
+
+[![asciicast](https://asciinema.org/a/iB66NylHrKpXVn2f5tJPVZBV3.svg)](https://asciinema.org/a/iB66NylHrKpXVn2f5tJPVZBV3)
+
+
+### Вывод отчета в формате JSON
+
+[![asciicast](https://asciinema.org/a/ou893m5wVDxvJSabUMW35nsxI.svg)](https://asciinema.org/a/ou893m5wVDxvJSabUMW35nsxI)
