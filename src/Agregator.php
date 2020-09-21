@@ -28,20 +28,42 @@ function getData(string $key, array $before, array $after)
     // В зависимости от условий проставляется значение type
     if (!array_key_exists($key, $before)) {
         // Если ключа нет в первом файле, то он считается добавленным
-        return ['key' => $key, 'value' => $after[$key], 'type' => 'added'];
+        $result = [
+            'key' => $key,
+            'value' => $after[$key],
+            'type' => 'added'
+        ];
     } elseif (!array_key_exists($key, $after)) {
         // Если ключа нет во втором файле, то он считается удаленным
-        return ['key' => $key, 'value' => $before[$key], 'type' => 'deleted'];
+        $result = [
+            'key' => $key,
+            'value' => $before[$key],
+            'type' => 'deleted'
+        ];
     } elseif (is_array($before[$key]) && is_array($after[$key])) {
         // Если значение ключа в обоих случаях массив, то создаем узел
-        return ['name' => $key, 'type' => 'parent', 'children' => agregateDiff($before[$key], $after[$key])];
+        $result = [
+            'name' => $key,
+            'type' => 'parent',
+            'children' => agregateDiff($before[$key], $after[$key])
+        ];
     } elseif ($before[$key] === $after[$key]) {
         // Если значения ключа из обоих файлов равны, значит он НЕ изменился
-        return ['key' => $key, 'value' => $before[$key], 'type' => 'unchanged'];
+        $result = [
+            'key' => $key,
+            'value' => $before[$key],
+            'type' => 'unchanged'
+        ];
     } else {
         // Если значения ключа из обоих файлов НЕ равны, значит он изменился
-        return ['key' => $key, 'beforeValue' => $before[$key], 'afterValue' => $after[$key], 'type' => 'changed'];
+        $result = [
+            'key' => $key,
+            'beforeValue' => $before[$key],
+            'afterValue' => $after[$key],
+            'type' => 'changed'
+        ];
     }
+    return $result;
 }
 
 // Преобразование объекта в ассоциативный массив

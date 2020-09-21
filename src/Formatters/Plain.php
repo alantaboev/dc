@@ -7,31 +7,28 @@ use function Funct\Collection\flattenAll;
 function render(array $differences)
 {
     $lines = getLines($differences);
-    return implode("\n", $lines);
+    $simpleLines = flattenAll($lines);
+    return implode("\n", $simpleLines);
 }
 
-function getLines(array $tree, $parentName = null): array
+function getLines(array $diffTree, $path = null): array
 {
-    $strings = array_reduce($tree, function ($acc, $node) use ($parentName) {
+    return array_reduce($diffTree, function ($acc, $node) use ($path) {
         switch ($node['type']) {
             case 'parent':
-                $name = ($parentName === null) ? $node['name'] : "{$parentName}.{$node['name']}";
+                $name = ($path === null) ? $node['name'] : "{$path}.{$node['name']}";
                 $acc[] = getLines($node['children'], $name);
                 break;
             case 'added':
-                $name = getName($node, $parentName);
-                $value = getValue($node['value']);
-                $acc[] = "Property '$name' was added with value: $value";
+                $acc[] = "Property '" . getName($node, $path) . "' was added with value: " . getValue($node['value']);
                 break;
             case 'deleted':
-                $name = getName($node, $parentName);
-                $acc[] = "Property '$name' was removed";
+                $acc[] = "Property '" . getName($node, $path) . "' was removed";
                 break;
             case 'changed':
-                $name = getName($node, $parentName);
-                $beforeValue = getValue($node['beforeValue']);
-                $afterValue = getValue($node['afterValue']);
-                $acc[] = "Property '$name' was updated. From $beforeValue to $afterValue";
+                $oldVal = getValue($node['beforeValue']);
+                $newVal = getValue($node['afterValue']);
+                $acc[] = "Property '" . getName($node, $path) . "' was updated. From $oldVal to $newVal";
                 break;
             case 'unchanged':
                 break;
@@ -40,15 +37,14 @@ function getLines(array $tree, $parentName = null): array
         }
         return $acc;
     });
-    return flattenAll($strings);
 }
 
-function getName(array $node, $parentName): string
+function getName(array $node, $path): string
 {
-    if ($parentName === null) {
+    if ($path === null) {
         return "{$node['key']}";
     }
-    return "{$parentName}.{$node['key']}";
+    return "{$path}.{$node['key']}";
 }
 
 function getValue($value)

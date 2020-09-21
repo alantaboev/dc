@@ -2,20 +2,21 @@
 
 namespace Differ\Formatters\Pretty;
 
-function render(array $differences)
+function render(array $differences): string
 {
     $lines = getLines($differences); // Получение строк
-    return "{\n$lines\n}\n"; // Возврат всех строк в фигурных скобках
+    $implodeLines = implode("\n", $lines);
+    return "{\n$implodeLines\n}\n"; // Возврат всех строк в фигурных скобках
 }
 
-function getLines(array $tree, $depth = 0)
+function getLines(array $diffTree, $depth = 0): array
 {
     $indent = '  ' . str_repeat('    ', $depth); // Отступ
-    $strings = array_reduce($tree, function ($acc, $node) use ($indent, $depth) {
+    return array_reduce($diffTree, function ($acc, $node) use ($indent, $depth) {
         switch ($node['type']) {
             case 'parent':
                 $children = getLines($node['children'], $depth + 1);
-                $acc[] = "$indent  {$node['name']}: {\n$children\n  $indent}";
+                $acc[] = "$indent  {$node['name']}: {\n" . implode("\n", $children) . "\n  $indent}";
                 break;
             case 'unchanged':
                 $acc[] = "$indent  {$node['key']}: " . getValue($node['value'], $depth);
@@ -35,7 +36,6 @@ function getLines(array $tree, $depth = 0)
         }
         return $acc;
     });
-    return implode("\n", $strings); // Возврат массива в строки с разделителем переноса
 }
 
 // Проверка значения ключа. Если булев, то возврат строки, соответствующей значению
@@ -51,7 +51,7 @@ function getValue($value, int $depth)
 }
 
 // Преобразование вложенного узла
-function convertNode(array $node, int $depth)
+function convertNode(array $node, int $depth): string
 {
     $indent = '  ' . str_repeat('    ', $depth);
     $endIndent = '  ' . str_repeat('    ', $depth - 1);
