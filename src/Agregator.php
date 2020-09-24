@@ -4,15 +4,8 @@ namespace Differ\Agregator;
 
 use function Funct\Collection\union;
 
-function agregateDiff($before, $after): array
+function agregateDiff(array $before, array $after): array
 {
-    // Проверка входных данных. Объекты преобразуем в ассоциативные массивы
-    if (is_object($before)) {
-        $before = convertObjectToArray($before);
-    }
-    if (is_object($after)) {
-        $after = convertObjectToArray($after);
-    }
     // Объединение и выборка уникальных ключей в отдельный массив
     $uniqueKeys = union(array_keys($before), array_keys($after));
     sort($uniqueKeys);
@@ -23,7 +16,7 @@ function agregateDiff($before, $after): array
 }
 
 // Получение данных ключа
-function getData(string $key, array $before, array $after)
+function getData(string $key, array $before, array $after): array
 {
     // В зависимости от условий проставляется значение type
     if (!array_key_exists($key, $before)) {
@@ -43,12 +36,4 @@ function getData(string $key, array $before, array $after)
         $result = ['key' => $key, 'beforeValue' => $before[$key], 'afterValue' => $after[$key], 'type' => 'changed'];
     }
     return $result;
-}
-
-// Преобразование объекта в ассоциативный массив
-function convertObjectToArray(object $data): array
-{
-    return array_map(function ($value) {
-        return is_object($value) ? convertObjectToArray($value) : $value;
-    }, (array)$data);
 }

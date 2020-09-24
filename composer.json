@@ -19,7 +19,6 @@
       "Differ\\Tests\\": "tests"
     },
     "files": [
-      "src/Cli.php",
       "src/Differ.php",
       "src/Agregator.php",
       "src/Parsers.php",

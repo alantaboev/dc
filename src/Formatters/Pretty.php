@@ -9,7 +9,7 @@ function render(array $differences): string
     return "{\n$implodeLines\n}\n"; // Возврат всех строк в фигурных скобках
 }
 
-function getLines(array $diffTree, $depth = 0): array
+function getLines(array $diffTree, int $depth = 0): array
 {
     $indent = '  ' . str_repeat('    ', $depth); // Отступ
     return array_reduce($diffTree, function ($acc, $node) use ($indent, $depth) {
@@ -39,7 +39,7 @@ function getLines(array $diffTree, $depth = 0): array
 }
 
 // Проверка значения ключа. Если булев, то возврат строки, соответствующей значению
-function getValue($value, int $depth)
+function getValue($value, int $depth): string
 {
     if (is_bool($value)) {
         return $value === true ? 'true' : 'false';

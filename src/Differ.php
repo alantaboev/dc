@@ -5,31 +5,37 @@ namespace Differ\Differ;
 use function Differ\Agregator\agregateDiff;
 use function Differ\Parsers\parse;
 
-function genDiff($firstFilePath, $secondFilePath, $format)
+function genDiff(string $firstFilePath, string $secondFilePath, string $format): string
 {
-    // Проверка путей с выбросом исключения в случае отсутствия файла
-    if (!file_exists($firstFilePath) || !file_exists($secondFilePath)) {
-        throw new \Exception("File not found. You should write a correct path to the file");
-    }
-
-    // Получение расширения файлов. Необходимо для функции parse, чтобы понимать какой формат парсить
+    // Получение расширения файлов. Необходимо, чтобы понимать какой формат парсить
     $firstFileExtension = pathinfo($firstFilePath, PATHINFO_EXTENSION);
     $secondFileExtension = pathinfo($secondFilePath, PATHINFO_EXTENSION);
 
-    // Получение содержимого файлов
-    $firstFileContent = file_get_contents($firstFilePath);
-    $secondFileContent = file_get_contents($secondFilePath);
-
     // Парсинг содержимого файлов в ассоциативный массив
-    $firstFileKeys = parse($firstFileContent, $firstFileExtension);
-    $secondFileKeys = parse($secondFileContent, $secondFileExtension);
+    $firstFileKeys = readFile($firstFilePath, $firstFileExtension);
+    $secondFileKeys = readFile($secondFilePath, $secondFileExtension);
 
     // Генерация массива данных с действиями, ключами и их значениями
     $differences = agregateDiff($firstFileKeys, $secondFileKeys);
 
     // Выбор функции для рендера
-    $format = ucfirst($format);
+    $formats = ['Json', 'Plain', 'Pretty']; // Поддерживаемые форматы вывода
+    $currentFormat = ucfirst($format);
+    if (!in_array($currentFormat, $formats)) {
+        throw new \Exception("Unknown format '$format'. Supported formats: " . implode(', ', $formats) . ".");
+    }
     $render = "Differ\\Formatters\\$format\\render";
 
     return $render($differences);
+}
+
+function readFile(string $filePath, string $fileExtension): array
+{
+    // Проверка путей с выбросом исключения в случае отсутствия файла
+    if (!file_exists($filePath)) {
+        throw new \Exception("File not found. You should write a correct path to the file '$filePath'");
+    }
+
+    $fileContent = file_get_contents($filePath); // Получение содержимого файла
+    return parse($fileContent, $fileExtension);  // Возврат содержимого файла в ассоциативном массиве
 }

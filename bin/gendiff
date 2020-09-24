@@ -10,6 +10,31 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-use function Differ\Cli\run;
+use function Differ\Differ\genDiff;
+
+function run()
+{
+    $doc = <<<DOC
+    Generate diff
+        
+    Usage:
+      gendiff (-h|--help)
+      gendiff (-v|--version)
+      gendiff [--format <fmt>] <firstFile> <secondFile>
+    
+    Options:
+      -h --help                     Show this screen
+      -v --version                  Show version
+      --format <fmt>                Report format [default: pretty]
+    DOC;
+
+    $args = Docopt::handle($doc, ['version' => 'gendiff v1.0.10']);
+
+    try {
+        print(genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']));
+    } catch (\Exception $e) {
+        print($e->getMessage());
+    }
+}
 
 run();

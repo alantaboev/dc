@@ -2,88 +2,42 @@
 
 namespace Differ\Tests;
 
-use \PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
+
 use function Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {
-    // Тест плоских файлов JSON с выводом в формате Pretty
-    public function testJsonPretty()
+    /**
+     * @dataProvider addData
+     * @param $before
+     * @param $after
+     * @param $expect
+     * @param $format
+     * @throws \Exception
+     */
+    public function testDiff($before, $after, $expect, $format)
     {
-        $before = __DIR__ . "/fixtures/before.json";
-        $after = __DIR__ . "/fixtures/after.json";
-        $content = file_get_contents(__DIR__ . "/fixtures/expectPretty");
-        $expect = str_replace("\r\n", "\n", $content); // Замена переноса строк, если работаем в Windows
-        $this->assertEquals($expect, genDiff($before, $after, 'pretty'));
+        $this->assertEquals($expect, genDiff($before, $after, $format));
     }
 
-    // Тест плоских файлов YAML с выводом в формате Pretty
-    public function testYamlPretty()
+    public function addData()
     {
-        $before = __DIR__ . "/fixtures/before.yaml";
-        $after = __DIR__ . "/fixtures/after.yaml";
-        $content = file_get_contents(__DIR__ . "/fixtures/expectPretty");
-        $expect = str_replace("\r\n", "\n", $content);
-        $this->assertEquals($expect, genDiff($before, $after, 'pretty'));
-    }
-
-    // Тест вложенных файлов JSON с выводом в формате Pretty
-    public function testNestedJsonPretty()
-    {
-        $before = __DIR__ . "/fixtures/beforeNested.json";
-        $after = __DIR__ . "/fixtures/afterNested.json";
-        $content = file_get_contents(__DIR__ . "/fixtures/expectNestedPretty");
-        $expect = str_replace("\r\n", "\n", $content);
-        $this->assertEquals($expect, genDiff($before, $after, 'pretty'));
-    }
-
-    // Тест вложенных файлов YAML с выводом в формате Pretty
-    public function testNestedYamlPretty()
-    {
-        $before = __DIR__ . "/fixtures/beforeNested.yaml";
-        $after = __DIR__ . "/fixtures/afterNested.yaml";
-        $content = file_get_contents(__DIR__ . "/fixtures/expectNestedPretty");
-        $expect = str_replace("\r\n", "\n", $content);
-        $this->assertEquals($expect, genDiff($before, $after, 'pretty'));
-    }
-
-    // Тест вложенных файлов JSON с выводом в формате Plain
-    public function testNestedJsonPlain()
-    {
-        $before = __DIR__ . "/fixtures/beforeNested.json";
-        $after = __DIR__ . "/fixtures/afterNested.json";
-        $content = file_get_contents(__DIR__ . "/fixtures/expectPlain");
-        $expect = str_replace("\r\n", "\n", $content);
-        $this->assertEquals($expect, genDiff($before, $after, 'plain'));
-    }
-
-    // Тест вложенных файлов YAML с выводом в формате Plain
-    public function testNestedYamlPlain()
-    {
-        $before = __DIR__ . "/fixtures/beforeNested.yaml";
-        $after = __DIR__ . "/fixtures/afterNested.yaml";
-        $content = file_get_contents(__DIR__ . "/fixtures/expectPlain");
-        $expect = str_replace("\r\n", "\n", $content);
-        $this->assertEquals($expect, genDiff($before, $after, 'plain'));
-    }
-
-    // Тест вложенных файлов JSON с выводом в формате Json
-    public function testNestedJson()
-    {
-        $before = __DIR__ . "/fixtures/beforeNested.json";
-        $after = __DIR__ . "/fixtures/afterNested.json";
-        $content = file_get_contents(__DIR__ . "/fixtures/expect.json");
-        $expect = str_replace("\r\n", "\n", $content);
-        $this->assertEquals($expect, genDiff($before, $after, 'json'));
-    }
-
-    // Тест вложенных файлов YAML с выводом в формате Json
-    public function testNestedYaml()
-    {
-        $before = __DIR__ . "/fixtures/beforeNested.yaml";
-        $after = __DIR__ . "/fixtures/afterNested.yaml";
-        $content = file_get_contents(__DIR__ . "/fixtures/expect.json");
-        $expect = str_replace("\r\n", "\n", $content);
-        $this->assertEquals($expect, genDiff($before, $after, 'json'));
+        $path = __DIR__ . "/fixtures/";
+        $beforeJson = $path . "beforeNested.json";
+        $afterJson = $path . "afterNested.json";
+        $beforeYaml = $path . "beforeNested.yaml";
+        $afterYaml = $path . "afterNested.yaml";
+        $expectPretty = str_replace("\r\n", "\n", file_get_contents($path . "expectPretty"));
+        $expectPlain = str_replace("\r\n", "\n", file_get_contents($path . "expectPlain"));
+        $expectJson = str_replace("\r\n", "\n", file_get_contents($path . "expect.json"));
+        return [
+            'json in pretty' => [$beforeJson, $afterJson, $expectPretty, 'pretty'],
+            'yaml in pretty' => [$beforeYaml, $afterYaml, $expectPretty, 'pretty'],
+            'json in plain' => [$beforeJson, $afterJson, $expectPlain, 'plain'],
+            'yaml in plain' => [$beforeYaml, $afterYaml, $expectPlain, 'plain'],
+            'json in json' => [$beforeJson, $afterJson, $expectJson, 'json'],
+            'yaml in json' => [$beforeYaml, $afterYaml, $expectJson, 'json']
+        ];
     }
 }

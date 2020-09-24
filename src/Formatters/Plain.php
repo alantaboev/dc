@@ -4,14 +4,14 @@ namespace Differ\Formatters\Plain;
 
 use function Funct\Collection\flattenAll;
 
-function render(array $differences)
+function render(array $differences): string
 {
     $lines = getLines($differences);
     $simpleLines = flattenAll($lines);
     return implode("\n", $simpleLines);
 }
 
-function getLines(array $diffTree, $path = null): array
+function getLines(array $diffTree, string $path = null): array
 {
     return array_reduce($diffTree, function ($acc, $node) use ($path) {
         switch ($node['type']) {
@@ -47,7 +47,7 @@ function getName(array $node, $path): string
     return "{$path}.{$node['key']}";
 }
 
-function getValue($value)
+function getValue($value): string
 {
     if (is_bool($value)) {
         return $value === true ? 'true' : 'false';
