@@ -1,6 +1,6 @@
 [
     {
-        "name": "common",
+        "key": "common",
         "type": "parent",
         "children": [
             {
@@ -39,11 +39,11 @@
                 "type": "added"
             },
             {
-                "name": "setting6",
+                "key": "setting6",
                 "type": "parent",
                 "children": [
                     {
-                        "name": "doge",
+                        "key": "doge",
                         "type": "parent",
                         "children": [
                             {
@@ -69,7 +69,7 @@
         ]
     },
     {
-        "name": "group1",
+        "key": "group1",
         "type": "parent",
         "children": [
             {

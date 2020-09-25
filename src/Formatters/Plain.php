@@ -13,33 +13,28 @@ function render(array $differences): string
 
 function getLines(array $diffTree, string $path = null): array
 {
-    return array_reduce($diffTree, function ($acc, $node) use ($path) {
+    return array_map(function ($node) use ($path) {
         switch ($node['type']) {
             case 'parent':
-                $name = ($path === null) ? $node['name'] : "{$path}.{$node['name']}";
-                $acc[] = getLines($node['children'], $name);
-                break;
+                $name = getName($node, $path);
+                return getLines($node['children'], $name);
             case 'added':
-                $acc[] = "Property '" . getName($node, $path) . "' was added with value: " . getValue($node['value']);
-                break;
+                return "Property '" . getName($node, $path) . "' was added with value: " . stringify($node['value']);
             case 'deleted':
-                $acc[] = "Property '" . getName($node, $path) . "' was removed";
-                break;
+                return "Property '" . getName($node, $path) . "' was removed";
             case 'changed':
-                $oldVal = getValue($node['beforeValue']);
-                $newVal = getValue($node['afterValue']);
-                $acc[] = "Property '" . getName($node, $path) . "' was updated. From $oldVal to $newVal";
-                break;
+                $oldVal = stringify($node['beforeValue']);
+                $newVal = stringify($node['afterValue']);
+                return "Property '" . getName($node, $path) . "' was updated. From $oldVal to $newVal";
             case 'unchanged':
-                break;
+                return [];
             default:
                 throw new \Exception("Unknown action '{$node['type']}'");
         }
-        return $acc;
-    });
+    }, $diffTree);
 }
 
-function getName(array $node, $path): string
+function getName(array $node, ?string $path): string
 {
     if ($path === null) {
         return "{$node['key']}";
@@ -47,7 +42,7 @@ function getName(array $node, $path): string
     return "{$path}.{$node['key']}";
 }
 
-function getValue($value): string
+function stringify($value): string
 {
     if (is_bool($value)) {
         return $value === true ? 'true' : 'false';

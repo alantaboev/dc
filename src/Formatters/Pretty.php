@@ -16,20 +16,20 @@ function getLines(array $diffTree, int $depth = 0): array
         switch ($node['type']) {
             case 'parent':
                 $children = getLines($node['children'], $depth + 1);
-                $acc[] = "$indent  {$node['name']}: {\n" . implode("\n", $children) . "\n  $indent}";
+                $acc[] = "$indent  {$node['key']}: {\n" . implode("\n", $children) . "\n  $indent}";
                 break;
             case 'unchanged':
-                $acc[] = "$indent  {$node['key']}: " . getValue($node['value'], $depth);
+                $acc[] = "$indent  {$node['key']}: " . stringify($node['value'], $depth);
                 break;
             case 'added':
-                $acc[] = "$indent+ {$node['key']}: " . getValue($node['value'], $depth);
+                $acc[] = "$indent+ {$node['key']}: " . stringify($node['value'], $depth);
                 break;
             case 'deleted':
-                $acc[] = "$indent- {$node['key']}: " . getValue($node['value'], $depth);
+                $acc[] = "$indent- {$node['key']}: " . stringify($node['value'], $depth);
                 break;
             case 'changed':
-                $acc[] = "$indent- {$node['key']}: " . getValue($node['beforeValue'], $depth);
-                $acc[] = "$indent+ {$node['key']}: " . getValue($node['afterValue'], $depth);
+                $acc[] = "$indent- {$node['key']}: " . stringify($node['beforeValue'], $depth);
+                $acc[] = "$indent+ {$node['key']}: " . stringify($node['afterValue'], $depth);
                 break;
             default:
                 throw new \Exception("Unknown action '{$node['type']}'");
@@ -39,29 +39,29 @@ function getLines(array $diffTree, int $depth = 0): array
 }
 
 // Проверка значения ключа. Если булев, то возврат строки, соответствующей значению
-function getValue($value, int $depth): string
+function stringify($value, int $depth): string
 {
     if (is_bool($value)) {
         return $value === true ? 'true' : 'false';
     }
     if (is_array($value)) {
-        return convertNode($value, $depth + 1);
+        return stringifyNode($value, $depth + 1);
     }
     return $value;
 }
 
 // Преобразование вложенного узла
-function convertNode(array $node, int $depth): string
+function stringifyNode(array $node, int $depth): string
 {
     $indent = '  ' . str_repeat('    ', $depth);
     $endIndent = '  ' . str_repeat('    ', $depth - 1);
     $uniqueKeys = array_keys($node);
-    $strings = array_reduce($uniqueKeys, function ($acc, $key) use ($node, $indent, $depth) {
-        $value = getValue($node[$key], $depth);
-        $acc[] = "$indent  {$key}: $value";
-        return $acc;
-    });
-    $formattedStrings = implode("\n", $strings);
 
+    $strings = array_map(function ($key) use ($node, $indent, $depth) {
+        $value = stringify($node[$key], $depth);
+        return "$indent  {$key}: $value";
+    }, $uniqueKeys);
+
+    $formattedStrings = implode("\n", $strings);
     return "{\n$formattedStrings\n  $endIndent}";
 }

@@ -12,29 +12,24 @@ if (file_exists($autoloadPath1)) {
 
 use function Differ\Differ\genDiff;
 
-function run()
-{
-    $doc = <<<DOC
-    Generate diff
-        
-    Usage:
-      gendiff (-h|--help)
-      gendiff (-v|--version)
-      gendiff [--format <fmt>] <firstFile> <secondFile>
+$doc = <<<DOC
+Generate diff
     
-    Options:
-      -h --help                     Show this screen
-      -v --version                  Show version
-      --format <fmt>                Report format [default: pretty]
-    DOC;
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
 
-    $args = Docopt::handle($doc, ['version' => 'gendiff v1.0.10']);
+Options:
+  -h --help                     Show this screen
+  -v --version                  Show version
+  --format <fmt>                Report format [default: pretty]
+DOC;
 
-    try {
-        print(genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']));
-    } catch (\Exception $e) {
-        print($e->getMessage());
-    }
+$args = Docopt::handle($doc, ['version' => 'gendiff v1.0.10']);
+
+try {
+    print(genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']));
+} catch (\Exception $e) {
+    print($e->getMessage());
 }
-
-run();
