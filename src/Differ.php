@@ -5,7 +5,7 @@ namespace Differ\Differ;
 use function Differ\Agregator\agregateDiff;
 use function Differ\Parsers\parse;
 
-function genDiff(string $firstFilePath, string $secondFilePath, string $format)
+function genDiff(string $firstFilePath, string $secondFilePath, string $format): string
 {
     // Парсинг содержимого файлов в ассоциативный массив
     $firstFileKeys = readFile($firstFilePath);
