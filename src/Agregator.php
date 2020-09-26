@@ -29,14 +29,12 @@ function getChanges(string $key, array $before, array $after): array
     if (is_array($before[$key]) && is_array($after[$key])) {
         return createNode($key, $before[$key], $after[$key], 'parent');
     }
-    // Если значения ключа из обоих файлов равны, значит он НЕ изменился
-    if ($before[$key] === $after[$key]) {
-        return createSimpleStructure($key, $before[$key], 'unchanged');
-    }
     // Если значения ключа из обоих файлов НЕ равны, значит он изменился
     if ($before[$key] !== $after[$key]) {
         return createStructure($key, $before[$key], $after[$key], 'changed');
     }
+    // Ключ не был изменен, если не сработало ни одно из условий выше
+    return createSimpleStructure($key, $before[$key], 'unchanged');
 }
 
 // Создание простой структуры

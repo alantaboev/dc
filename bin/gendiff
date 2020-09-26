@@ -29,7 +29,7 @@ DOC;
 $args = Docopt::handle($doc, ['version' => 'gendiff v1.0.10']);
 
 try {
-    print(genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']));
+    print genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']);
 } catch (\Exception $e) {
-    print($e->getMessage());
+    print $e->getMessage();
 }
