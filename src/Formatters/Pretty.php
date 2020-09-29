@@ -4,14 +4,14 @@ namespace Differ\Formatters\Pretty;
 
 function render(array $differences): string
 {
-    $lines = getLines($differences); // Получение строк
+    $lines = getLines($differences);
     $implodeLines = implode("\n", $lines);
-    return "{\n$implodeLines\n}\n"; // Возврат всех строк в фигурных скобках
+    return "{\n$implodeLines\n}\n";
 }
 
 function getLines(array $diffTree, int $depth = 0): array
 {
-    $indent = '  ' . str_repeat('    ', $depth); // Отступ
+    $indent = '  ' . str_repeat('    ', $depth);
     return array_reduce($diffTree, function ($acc, $node) use ($indent, $depth) {
         switch ($node['type']) {
             case 'parent':
@@ -38,7 +38,6 @@ function getLines(array $diffTree, int $depth = 0): array
     });
 }
 
-// Проверка значения ключа. Если булев, то возврат строки, соответствующей значению
 function stringify($value, int $depth): string
 {
     if (is_bool($value)) {
@@ -50,7 +49,6 @@ function stringify($value, int $depth): string
     return $value;
 }
 
-// Преобразование вложенного узла
 function stringifyNode(array $node, int $depth): string
 {
     $indent = '  ' . str_repeat('    ', $depth);

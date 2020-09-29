@@ -12,12 +12,12 @@ class DifferTest extends TestCase
      * @dataProvider addData
      * @param $before
      * @param $after
-     * @param $expect
+     * @param $referenceFile
      * @param $format
-     * @throws \Exception
      */
-    public function testDiff($before, $after, $expect, $format)
+    public function testDiff($before, $after, $referenceFile, $format)
     {
+        $expect = file_get_contents($referenceFile);
         $this->assertEquals($expect, genDiff($before, $after, $format));
     }
 
@@ -28,9 +28,9 @@ class DifferTest extends TestCase
         $afterJson = $path . "afterNested.json";
         $beforeYaml = $path . "beforeNested.yaml";
         $afterYaml = $path . "afterNested.yaml";
-        $expectPretty = str_replace("\r\n", "\n", file_get_contents($path . "expectPretty"));
-        $expectPlain = str_replace("\r\n", "\n", file_get_contents($path . "expectPlain"));
-        $expectJson = str_replace("\r\n", "\n", file_get_contents($path . "expect.json"));
+        $expectPretty = $path . "expectPretty";
+        $expectPlain = $path . "expectPlain";
+        $expectJson = $path . "expect.json";
         return [
             'json in pretty' => [$beforeJson, $afterJson, $expectPretty, 'pretty'],
             'yaml in pretty' => [$beforeYaml, $afterYaml, $expectPretty, 'pretty'],

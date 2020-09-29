@@ -32,4 +32,5 @@ try {
     print genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']);
 } catch (\Exception $e) {
     print $e->getMessage();
+    exit(1);
 }
